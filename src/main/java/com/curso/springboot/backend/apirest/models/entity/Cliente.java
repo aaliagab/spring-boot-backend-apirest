@@ -22,7 +22,6 @@ public class Cliente implements Serializable{
 	private Long id;
 	@Column(nullable = false, length = 60)
 	private String nombre;
-	@Column(nullable = false, length = 120)
 	private String apellidos;
 	@Column(nullable = false)
 	private String email;
