@@ -83,7 +83,7 @@ public class ClienteRestController {
 			nuevo_cliente = clienteService.save(cliente);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
-			response.put("mensaje", "Error al realizar la consulta a la base de datos");
+			response.put("mensaje", "Error al crear el cliente en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
