@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,6 +52,25 @@ public class ClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<List<Cliente>>(clientes, HttpStatus.OK);
+	}
+	
+	@GetMapping("/clientes/page/{page}")
+	public ResponseEntity<?> index(@PathVariable Integer page){
+		Map<String, Object> response = new HashMap<>();
+		Page<Cliente> clientes = null;
+		try {
+			clientes = clienteService.findAll(PageRequest.of(page, 10));
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			response.put("mensaje", "No fue posible obtener los datos de la BD en estos momentos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMessage()));
+		}
+		if(clientes == null || clientes.getContent().size()==0) {
+			response.put("mensaje", "No existen clientes registrados en la base de datos para la pagina "+page);
+			return new ResponseEntity<Map<String, Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Page<Cliente>>(clientes, HttpStatus.OK);
+		
 	}
 	
 	@GetMapping("/clientes/{id}")
