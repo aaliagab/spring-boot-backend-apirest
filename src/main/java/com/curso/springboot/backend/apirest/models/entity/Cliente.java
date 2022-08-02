@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +24,7 @@ public class Cliente implements Serializable{
 	@Column(nullable = false)
 	private String nombre;
 	private String apellidos;
+	
 	@Column(nullable = false)
 	private String email;
 	
@@ -32,11 +32,15 @@ public class Cliente implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
 	
+	private String foto;
+	
+	/*
 	//asignando valor al campo antes de persistir en la BD
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
 	}
+	*/
 	
 	public Long getId() {
 		return id;
@@ -69,6 +73,15 @@ public class Cliente implements Serializable{
 		this.createAt = createAt;
 	}
 	
+	
+	public String getFoto() {
+		return foto;
+	}
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+
 	/**
 	 * 
 	 */
