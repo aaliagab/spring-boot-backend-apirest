@@ -1,21 +1,13 @@
 package com.curso.springboot.backend.apirest.controllers;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.springboot.backend.apirest.models.entity.Cliente;
 import com.curso.springboot.backend.apirest.models.service.IClienteService;
+import com.curso.springboot.backend.apirest.models.service.IUploadFileService;
 
 //compartiendo recursos de nuestro api rest al dominio de app angular mediante uso de cors
 //tambien es posible restringir otros parametros
@@ -48,8 +41,9 @@ public class ClienteRestController {
 	@Autowired
 	private IClienteService clienteService;
 	
-	private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
-	
+	@Autowired
+	private IUploadFileService uploadFileService;
+		
 	@GetMapping("/clientes")
 	public ResponseEntity<?> index(){//Tratamiento de errores
 		Map<String, Object> response = new HashMap<>();
@@ -163,13 +157,8 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			Cliente cliente = clienteService.findById(id);
-			if(cliente.getFoto()!=null && !cliente.getFoto().equals("")) {
-				Path ruta_delete = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
-				File archivoAnterior = ruta_delete.toFile();
-				if(archivoAnterior.exists() && archivoAnterior.canRead()) {
-					archivoAnterior.delete();
-				}
-			}
+			String archivoAnterior = cliente.getFoto();
+			uploadFileService.eliminar(archivoAnterior);
 			clienteService.delete(id);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -187,18 +176,10 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 		Cliente cliente = clienteService.findById(id);
 		if(!archivo.isEmpty()) {
-			String nombreArchivo = id+"_"+archivo.getOriginalFilename().replace(" ", "");
-			Path ruta = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
-			log.info(ruta.toString());
+			String nombreArchivo = null;
+			
 			try {
-				Files.copy(archivo.getInputStream(), ruta);
-				if(cliente.getFoto()!=null && !cliente.getFoto().equals("")) {
-					Path ruta_delete = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
-					File archivoAnterior = ruta_delete.toFile();
-					if(archivoAnterior.exists() && archivoAnterior.canRead()) {
-						archivoAnterior.delete();
-					}
-				}
+				nombreArchivo = uploadFileService.copiar(archivo, id);		
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -206,6 +187,9 @@ public class ClienteRestController {
 				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
 				return new ResponseEntity<Map<String, Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+			
+			String archivoAnterior = cliente.getFoto();
+			uploadFileService.eliminar(archivoAnterior);	
 			
 			cliente.setFoto(nombreArchivo);
 			clienteService.save(cliente);
@@ -217,20 +201,18 @@ public class ClienteRestController {
 	
 	@GetMapping("/uploads/img/{nombreArchivo:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreArchivo){
-		Path ruta = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
-		log.info(ruta.toString());
+		
 		Resource recurso = null;
 		try {
-			recurso = new UrlResource(ruta.toUri());
+			recurso = uploadFileService.cargar(nombreArchivo);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(!recurso.exists() || !recurso.isReadable())
-			throw new RuntimeException("No se pudo cargar la imagen "+nombreArchivo);
 		HttpHeaders cabecera = new HttpHeaders();
 		cabecera.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename =\""+recurso.getFilename()+"\"");
 		
 		return new ResponseEntity<Resource>(recurso,cabecera, HttpStatus.OK);
 	}
+	
 }
