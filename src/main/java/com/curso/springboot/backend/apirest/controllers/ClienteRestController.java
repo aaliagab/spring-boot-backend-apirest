@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.springboot.backend.apirest.models.entity.Cliente;
+import com.curso.springboot.backend.apirest.models.entity.Region;
 import com.curso.springboot.backend.apirest.models.service.IClienteService;
 import com.curso.springboot.backend.apirest.models.service.IUploadFileService;
 
@@ -140,6 +141,7 @@ public class ClienteRestController {
 			cliente_actual.setApellidos(cliente.getApellidos());
 			cliente_actual.setEmail(cliente.getEmail());
 			cliente_actual.setNombre(cliente.getNombre());
+			cliente_actual.setRegion(cliente.getRegion());
 			cliente_actualizado = clienteService.save(cliente_actual);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -213,6 +215,25 @@ public class ClienteRestController {
 		cabecera.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename =\""+recurso.getFilename()+"\"");
 		
 		return new ResponseEntity<Resource>(recurso,cabecera, HttpStatus.OK);
+	}
+	
+	@GetMapping("/clientes/regiones")
+	public ResponseEntity<?> regiones(){//Tratamiento de errores
+		Map<String, Object> response = new HashMap<>();
+		List<Region> regiones = null;
+		try {
+			regiones = clienteService.findAllRegiones();
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			response.put("mensaje", "Error al realizar la consulta a la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(regiones == null || regiones.size()==0) {
+			response.put("mensaje", "No existen regiones registradas en la base de datos");
+			return new ResponseEntity<Map<String, Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Region>>(regiones, HttpStatus.OK);
 	}
 	
 }
