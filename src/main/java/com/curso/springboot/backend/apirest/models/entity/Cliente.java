@@ -16,38 +16,36 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.lang.NonNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="clientes")
-public class Cliente implements Serializable{	
-	
+public class Cliente implements Serializable{
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 
 	@Column(nullable = false)
 	private String nombre;
 	private String apellidos;
-	
+
 	@Column(nullable = false)
 	private String email;
-	
+
 	@Column(name = "create_at", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
-	
+
 	private String foto;
-	
+
 	@NotNull(message = "La region no puede ser vacia")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "region_id")//opcional, el crea por defecto foreing key con ese nombre
-	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})	
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 	private Region region;
-	
+
 	/*
 	//asignando valor al campo antes de persistir en la BD
 	@PrePersist
@@ -55,7 +53,7 @@ public class Cliente implements Serializable{
 		createAt = new Date();
 	}
 	*/
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -86,15 +84,15 @@ public class Cliente implements Serializable{
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-	
-	
+
+
 	public String getFoto() {
 		return foto;
 	}
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
-	
+
 	public Region getRegion() {
 		return region;
 	}
@@ -106,7 +104,7 @@ public class Cliente implements Serializable{
 
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 }

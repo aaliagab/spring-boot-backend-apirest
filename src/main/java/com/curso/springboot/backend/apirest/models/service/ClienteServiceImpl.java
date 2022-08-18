@@ -1,6 +1,5 @@
 package com.curso.springboot.backend.apirest.models.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +16,14 @@ import com.curso.springboot.backend.apirest.models.entity.Region;
 public class ClienteServiceImpl implements IClienteService{
 	@Autowired
 	private IClienteDao clienteDao;
-	
+
 	@Override
 	@Transactional(readOnly = true)//es opcional pues en CrudRepository ya los metodos son transaccionales
 	//de todos modos asi estamos sobrescribiendo a nuestro gusto el Transactional
 	public List<Cliente> findAll() {
-		return (List<Cliente>) clienteDao.findAll();
+		return clienteDao.findAll();
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Cliente> findAll(Pageable pageable) {
@@ -59,6 +58,6 @@ public class ClienteServiceImpl implements IClienteService{
 		// TODO Auto-generated method stub
 		return clienteDao.findAllRegiones();
 	}
-	
-	
+
+
 }
