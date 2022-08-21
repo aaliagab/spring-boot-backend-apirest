@@ -26,6 +26,11 @@ public class Usuario implements Serializable{
 	@Column(length = 255)
 	private String password;
 	private Boolean enabled;
+	
+	private String nombre;
+	@Column(name = "apellidos")
+	private String apellido;
+	private String email;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Role> roles;
@@ -69,6 +74,32 @@ public class Usuario implements Serializable{
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 
 	/**
 	 *

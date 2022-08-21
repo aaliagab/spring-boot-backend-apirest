@@ -19,7 +19,7 @@ import com.curso.springboot.backend.apirest.models.dao.IUsuarioDao;
 import com.curso.springboot.backend.apirest.models.entity.Usuario;
 //UserDetailsService interface propia de Spring Security para trabajar el proceso de login
 @Service
-public class UsuarioService implements UserDetailsService{
+public class UsuarioService implements IUsuarioService,UserDetailsService{
 
 	private Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 	
@@ -44,6 +44,13 @@ public class UsuarioService implements UserDetailsService{
 				usuario.getPassword(),
 				usuario.getEnabled(),
 				true, true, true, authorities);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return usuarioDao.findByUsername(username);
 	}
 
 }

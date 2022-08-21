@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,7 +70,7 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 		Page<Cliente> clientes = null;
 		try {
-			clientes = clienteService.findAll(PageRequest.of(page, 3));
+			clientes = clienteService.findAll(PageRequest.of(page, 4));
 		} catch (DataAccessException e) {
 			// TODO: handle exception
 			response.put("mensaje", "No fue posible obtener los datos de la BD en estos momentos");
@@ -83,6 +84,7 @@ public class ClienteRestController {
 
 	}
 
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/clientes/{id}")
 	public ResponseEntity<?> showById(@PathVariable Long id){//Manejo de errores en backend
 		Cliente cliente = null;
@@ -104,6 +106,7 @@ public class ClienteRestController {
 		return new ResponseEntity<>(cliente, HttpStatus.OK);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/clientes")
 	@ResponseStatus(HttpStatus.CREATED)//si sale bien retorna 201, si no se coloca por
 	//defecto retorna OK con codigo 200 si todo sale bien
@@ -127,6 +130,7 @@ public class ClienteRestController {
 		return new ResponseEntity<>(response,HttpStatus.CREATED);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PutMapping("/clientes/{id}")
 	public ResponseEntity<?> update(@RequestBody Cliente cliente, @PathVariable Long id){
 		Cliente cliente_actual = clienteService.findById(id), cliente_actualizado = null;
@@ -154,6 +158,7 @@ public class ClienteRestController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@DeleteMapping("/clientes/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		Map<String, Object> response = new HashMap<>();
@@ -172,6 +177,7 @@ public class ClienteRestController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@PostMapping("/clientes/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo,
 			@RequestParam("id") Long id){
@@ -217,6 +223,7 @@ public class ClienteRestController {
 		return new ResponseEntity<>(recurso,cabecera, HttpStatus.OK);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/clientes/regiones")
 	public ResponseEntity<?> regiones(){//Tratamiento de errores
 		Map<String, Object> response = new HashMap<>();

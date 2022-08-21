@@ -1,5 +1,7 @@
 package com.curso.springboot.backend.apirest.auth;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -25,13 +28,20 @@ public class AutorizationServerConfig extends AuthorizationServerConfigurerAdapt
 	@Autowired
 	@Qualifier("authenticationManager")
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private InfoAdicionalToken infoAdicionalToken;
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		// TODO Auto-generated method stub
+		// Registrando la informacion adicional al token
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken,accessTokenConverter()));
+		
 		endpoints.authenticationManager(authenticationManager)
 		.tokenStore(tokenStore())
-		.accessTokenConverter(accessTokenConverter());
+		.accessTokenConverter(accessTokenConverter())
+		.tokenEnhancer(tokenEnhancerChain);
 	}
 
 	@Bean
@@ -44,6 +54,8 @@ public class AutorizationServerConfig extends AuthorizationServerConfigurerAdapt
 	public JwtAccessTokenConverter accessTokenConverter() {
 		// TODO Auto-generated method stub
 		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+		jwtAccessTokenConverter.setSigningKey(JwtConfig.RSA_PRIVADA);
+		jwtAccessTokenConverter.setVerifierKey(JwtConfig.RSA_PUBLICA);
 		return jwtAccessTokenConverter;
 	}
 
