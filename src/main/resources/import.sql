@@ -27,3 +27,17 @@ INSERT INTO `roles` (nombre) VALUES ('ROLE_ADMIN');
 INSERT INTO `usuarios_roles` (usuario_id, roles_id) VALUES (1, 1);
 INSERT INTO `usuarios_roles` (usuario_id, roles_id) VALUES (2, 2);
 INSERT INTO `usuarios_roles` (usuario_id, roles_id) VALUES (2, 1);
+
+INSERT INTO productos (nombre, precio, create_at) values('Pan', 1, NOW());
+INSERT INTO productos (nombre, precio, create_at) values('Nevera', 450000, NOW());
+INSERT INTO productos (nombre, precio, create_at) values('Telefono Samsung Galaxy A10s', 150000, NOW());
+INSERT INTO productos (nombre, precio, create_at) values('Jarra Electrica', 4000, NOW());
+INSERT INTO productos (nombre, precio, create_at) values('Manzana', 110, NOW());
+INSERT INTO productos (nombre, precio, create_at) values('Leche condensada', 130, NOW());
+
+INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) values('Factura de electrodomesticos', "Todo bien", 1, NOW());
+INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) values('Factura de recargas', null, 1, NOW());
+
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) values(1,1,2);
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) values(3,1,4);
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) values(2,2,4);

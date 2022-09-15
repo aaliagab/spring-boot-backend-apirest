@@ -84,7 +84,8 @@ public class ClienteRestController {
 
 	}
 
-	@Secured({"ROLE_USER","ROLE_ADMIN"})
+	//@Secured esta comentado solo para etapa de desarrollo hacer testing con todos los permisos
+	//@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/clientes/{id}")
 	public ResponseEntity<?> showById(@PathVariable Long id){//Manejo de errores en backend
 		Cliente cliente = null;
@@ -241,6 +242,7 @@ public class ClienteRestController {
 			return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(regiones, HttpStatus.OK);
+		
 	}
 
 }
