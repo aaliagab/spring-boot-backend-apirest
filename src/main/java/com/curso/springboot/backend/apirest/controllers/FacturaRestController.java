@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.curso.springboot.backend.apirest.models.entity.Factura;
+import com.curso.springboot.backend.apirest.models.entity.Producto;
 import com.curso.springboot.backend.apirest.models.service.IFacturaService;
+import com.curso.springboot.backend.apirest.models.service.IProductoService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -24,6 +26,9 @@ public class FacturaRestController {
 
 	@Autowired
 	IFacturaService facturaService;
+	
+	@Autowired
+	IProductoService productoService;
 	
 	@GetMapping("/facturas")
 	@ResponseStatus(code = HttpStatus.OK)
@@ -46,7 +51,13 @@ public class FacturaRestController {
 	@DeleteMapping("/facturas/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void eliminar(@PathVariable Long id) {
-		facturaService.delete(id);
+		facturaService.delete(id); 
+	}
+	
+	@GetMapping("/facturas/filtrar-productos/{term}")
+	@ResponseStatus(code = HttpStatus.OK)
+	public List<Producto> listadoProductosMatch(@PathVariable String term){
+		return productoService.findByNombre(term);
 	}
 	
 	
