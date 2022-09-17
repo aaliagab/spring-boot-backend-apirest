@@ -35,7 +35,7 @@ import com.curso.springboot.backend.apirest.models.service.IUploadFileService;
 
 //compartiendo recursos de nuestro api rest al dominio de app angular mediante uso de cors
 //tambien es posible restringir otros parametros
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "*"}) //"*" acepta peticiones de cualquir origen, util para produccion
 
 @RestController
 @RequestMapping("/api")
@@ -85,7 +85,7 @@ public class ClienteRestController {
 	}
 
 	//@Secured esta comentado solo para etapa de desarrollo hacer testing con todos los permisos
-	//@Secured({"ROLE_USER","ROLE_ADMIN"})
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/clientes/{id}")
 	public ResponseEntity<?> showById(@PathVariable Long id){//Manejo de errores en backend
 		Cliente cliente = null;

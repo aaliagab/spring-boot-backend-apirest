@@ -25,8 +25,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		// TODO Auto-generated method stub
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**","/api/uploads/img/**", "/images/**").permitAll()
-		.antMatchers("/api/clientes/{id}").permitAll() //solo para etapa de desarrollo hacer testing con todos los permisos
-		.antMatchers("/api/facturas/**").permitAll() //solo para etapa de desarrollo hacer testing con todos los permisos
+		
 		/*.antMatchers(HttpMethod.GET, "/api/clientes/{id}").hasAnyRole("USER","ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/clientes/upload").hasAnyRole("USER","ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/clientes").hasRole("ADMIN")
@@ -38,7 +37,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));//"*" si deseo cualquier dominio
+		//"*" acepta peticiones de cualquier origen util para produccion
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "*"));//"*" si deseo cualquier dominio
 		
 		//OPTIONS POR ALGUNOS NAVEGADORES, "*" si fuera para cualquier metodo
 		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));

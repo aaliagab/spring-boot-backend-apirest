@@ -1,19 +1,19 @@
 /* tabla clientes */
-INSERT INTO regiones (id, nombre) VALUES (1, 'Sudam√©rica');
-INSERT INTO regiones (id, nombre) VALUES (2, 'Centroam√©rica');
-INSERT INTO regiones (id, nombre) VALUES (3, 'Norteam√©rica');
+INSERT INTO regiones (id, nombre) VALUES (1, 'SudamÈrica');
+INSERT INTO regiones (id, nombre) VALUES (2, 'CentroamÈrica');
+INSERT INTO regiones (id, nombre) VALUES (3, 'NorteamÈrica');
 INSERT INTO regiones (id, nombre) VALUES (4, 'Europa');
 INSERT INTO regiones (id, nombre) VALUES (5, 'Asia');
 INSERT INTO regiones (id, nombre) VALUES (6, 'Africa');
-INSERT INTO regiones (id, nombre) VALUES (7, 'Ocean√≠a');
-INSERT INTO regiones (id, nombre) VALUES (8, 'Ant√°rtida');
+INSERT INTO regiones (id, nombre) VALUES (7, 'OceanÌa');
+INSERT INTO regiones (id, nombre) VALUES (8, 'Ant·rtida');
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(1, "Adriel", "Aliaga Benavides", "a@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(2, "Alejandro", "Aliaga Benavides", "a@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(2, "Yudisel", "Santana Pacheco", "b@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(2, "Amelia", "Aliaga Santana", "b@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(3, "Lazara", "Aliaga Benavides", "a@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(1, "Segundo", "Aliaga Cespedes", "a@a.aa", "2022-04-22");
-INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(1, "Teresa", "Benavides Cuti√±o", "a@a.aa", "2022-04-22");
+INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(1, "Teresa", "Benavides CutiÒo", "a@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(4, "Lilian", "Blanco Aliaga", "a@a.aa", "2022-04-22");
 INSERT INTO clientes (region_id, nombre, apellidos, email, create_at) values(5, "Liliannis", "Blanco Aliaga", "a@a.aa", "2022-04-22");
 
